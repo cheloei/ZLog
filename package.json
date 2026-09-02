@@ -1,0 +1,70 @@
+{
+  "name": "z-tracer-kit",
+  "version": "1.0.0",
+  "description": "Every log has a trail. A lightweight, typed logging utility with visual groups and a powerful lifecycle.",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
+    "fix-imports": "ts-add-js-extension --dir=dist/esm",
+    "postbuild": "node scripts/postbuild.js",
+    "minify": "node scripts/minify.js",
+    "build": "npm run compile && npm run fix-imports && npm run postbuild && npm run minify",
+    "pack": "npm run build && npm pack",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "log",
+    "logging",
+    "logger",
+    "debug",
+    "console",
+    "typescript",
+    "javascript",
+    "npm",
+    "nodejs",
+    "browser",
+    "visual",
+    "group",
+    "lifecycle",
+    "callback",
+    "zero-dependencies",
+    "lightweight",
+    "ztracer"
+  ],
+  "author": {
+    "name": "Abolfazl Cheloei",
+    "email": "e.cheloei@gmail.com",
+    "url": "https://github.com/cheloei"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheloei/ZTracer.git"
+  },
+  "homepage": "https://cheloei.github.io/ZTracer",
+  "bugs": {
+    "url": "https://github.com/cheloei/ZTracer/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "terser": "^5.51.2",
+    "ts-add-js-extension": "^1.6.6",
+    "typescript": "^7.0.2"
+  }
+}

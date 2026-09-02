@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Lifecycle — ZTracer</title>
+
+  <!-- Bootstrap 5 (dark theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../index.html">
+        <img src="../assets/logo.webp" alt="ZTracer Logo" height="32" />
+        <span class="text-primary">Z</span>Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../index.html">Home</a></li>
+              <li><a class="dropdown-item" href="getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item" href="concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item active" href="lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item" href="api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../development/typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="../development/runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item" href="../development/contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="py-4 bg-dark text-light">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Log Lifecycle</h1>
+      <p class="lead text-light-emphasis">The complete journey of a log — from call to console.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="py-4 bg-dark-subtle">
+    <div class="container">
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title"><i class="fas fa-list-ul me-2"></i>On this page</div>
+        <ul class="toc-list">
+          <li><a href="#flow">The Lifecycle Flow</a></li>
+          <li><a href="#stages">The Four Stages</a></li>
+          <li><a href="#order">Execution Order</a></li>
+          <li><a href="#errors">Error Handling</a></li>
+          <li><a href="#use-cases">Use Cases</a></li>
+        </ul>
+      </div>
+
+      <!-- Flow -->
+      <h3 id="flow" class="text-light">The Lifecycle Flow</h3>
+      <p class="text-light-emphasis">
+        Every log call follows a <strong>predictable pipeline</strong> of four stages:
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary mb-3" style="font-family: monospace; font-size: 0.95rem; text-align: center; line-height: 2.2;">
+        <span class="text-primary">logger.log()</span> <span class="text-comment">// or .fromJson() / .time()</span><br />
+        <span class="text-light-emphasis">⬇</span><br />
+        <span class="text-warning">1. Console Logger</span> <span class="text-comment">(only if debug: true)</span><br />
+        <span class="text-light-emphasis">⬇</span><br />
+        <span class="text-success">2. Global Callback</span> <span class="text-comment">(if defined)</span><br />
+        <span class="text-light-emphasis">⬇</span><br />
+        <span class="text-info">3. Group Callback</span> <span class="text-comment">(if group exists & has callback)</span><br />
+        <span class="text-light-emphasis">⬇</span><br />
+        <span class="text-primary">4. Specific Callback</span> <span class="text-comment">(if options.callBack provided)</span><br />
+        <span class="text-light-emphasis">⬇</span><br />
+        <span class="text-light-emphasis">Console Output</span>
+      </div>
+
+      <!-- Stages -->
+      <h3 id="stages" class="text-light mt-4">The Four Stages</h3>
+
+      <h5 class="text-warning mt-3">1. Console Logger</h5>
+      <p class="text-light-emphasis">
+        Renders the visual group header and executes the logging function
+        (<code>console.log</code>, <code>console.table</code>, or <code>console.time</code>).
+        <strong>Only runs</strong> when <code>global.debug</code> is <code>true</code>.
+      </p>
+
+      <h5 class="text-success mt-3">2. Global Callback</h5>
+      <p class="text-light-emphasis">
+        Defined in <code>global.callBack</code>. Runs for <strong>every log</strong>,
+        regardless of group. Ideal for analytics, telemetry, or custom formatting.
+        Runs even if <code>debug: false</code>.
+      </p>
+
+      <h5 class="text-info mt-3">3. Group Callback</h5>
+      <p class="text-light-emphasis">
+        Defined per group (<code>groups[name].callBack</code>). Runs only for logs
+        in that specific group. Great for group‑specific logic.
+        Runs even if <code>debug: false</code>.
+      </p>
+
+      <h5 class="text-primary mt-3">4. Specific Callback</h5>
+      <p class="text-light-emphasis">
+        Passed directly in <code>options.callBack</code>. Runs <strong>only for that
+        single log</strong>, after all other callbacks.
+        Runs even if <code>debug: false</code>.
+      </p>
+
+      <!-- Order -->
+      <h3 id="order" class="text-light mt-4">Execution Order</h3>
+      <p class="text-light-emphasis">
+        The order is <strong>always</strong>: Console Logger → Global → Group → Specific.
+        This predictability is key to building reliable logging pipelines.
+      </p>
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis">
+        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+        <strong>Important:</strong> Even if <code>debug: false</code> (skipping stage 1),
+        stages 2–4 <strong>still execute</strong>. This allows production telemetry
+        without console clutter.
+      </div>
+
+      <!-- Errors -->
+      <h3 id="errors" class="text-light mt-4">Error Handling</h3>
+      <p class="text-light-emphasis">
+        Errors in any callback are <strong>caught and logged</strong>, but the
+        application <strong>never crashes</strong>.
+      </p>
+      <ul class="text-light-emphasis">
+        <li><strong>debug: true</strong> — full error details (stack, data, group)</li>
+        <li><strong>debug: false</strong> — only error message</li>
+      </ul>
+      <p class="text-light-emphasis">
+        See <a href="api.html#errors" class="text-primary">API Reference: Errors</a>
+        for more details.
+      </p>
+
+      <!-- Use Cases -->
+      <h3 id="use-cases" class="text-light mt-4">Use Cases</h3>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="bg-dark p-3 rounded-4 border border-secondary h-100">
+            <h6 class="text-primary"><i class="fas fa-chart-line me-2"></i>Analytics</h6>
+            <p class="text-light-emphasis small">Global callback sends every log to your analytics service.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-dark p-3 rounded-4 border border-secondary h-100">
+            <h6 class="text-success"><i class="fas fa-bell me-2"></i>Alerts</h6>
+            <p class="text-light-emphasis small">Specific callback sends Slack alerts only for critical logs.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-dark p-3 rounded-4 border border-secondary h-100">
+            <h6 class="text-warning"><i class="fas fa-filter me-2"></i>Transformation</h6>
+            <p class="text-light-emphasis small">Global callback enriches data (add timestamp, user ID) before output.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-dark p-3 rounded-4 border border-secondary h-100">
+            <h6 class="text-info"><i class="fas fa-toggle-on me-2"></i>Environment logic</h6>
+            <p class="text-light-emphasis small">Conditional logic based on environment (dev/prod).</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-light-emphasis mt-3">
+        For working code examples, visit the <a href="examples.html" class="text-primary">Examples</a> page.
+      </p>
+
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis mt-3">
+        <i class="fas fa-arrow-right text-primary me-2"></i>
+        <strong>Next:</strong> Explore the complete
+        <a href="api.html" class="text-primary">API Reference</a> or see
+        <a href="examples.html" class="text-primary">Examples</a> in action.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="../development/contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZTracer - Browser Example</title>
+  <style>
+    /* --- UI Styles --- */
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: #f8f9fa;
+      color: #212529;
+    }
+    h1 {
+      color: #0d6efd;
+      border-bottom: 2px solid #dee2e6;
+      padding-bottom: 0.5rem;
+    }
+    .container {
+      background: white;
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info {
+      background: #e9ecef;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+    code {
+      background: #f1f3f5;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.9rem;
+    }
+    button {
+      background: #0d6efd;
+      color: white;
+      border: none;
+      padding: 0.6rem 2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    button:hover {
+      background: #0b5ed7;
+    }
+    #output {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-top: 1rem;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 ZTracer Browser Example</h1>
+    <p>Open the browser console (<kbd>F12</kbd>) to see the styled log output with colors and groups.</p>
+    <div class="info">
+      <strong>ℹ️ Note:</strong> This example uses the same <code>config.js</code> as the Node.js example.
+      Logs are displayed in the console with group styling and callbacks.
+    </div>
+    <button id="runBtn">▶ Run Example</button>
+    <div id="output">Click the button to run the example...</div>
+  </div>
+  <!--
+    Import Map: Maps the "z-tracer-kit" package to the ESM distribution.
+    This allows the browser to resolve the import correctly.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "z-tracer-kit": "./node_modules/z-tracer-kit/dist/esm/index.js"
+    }
+  }
+  </script>
+  <script type="module">
+    // --- Browser Example Script ---
+    import zt from "./config.js";
+
+    const output = document.getElementById('output');
+    const runBtn = document.getElementById('runBtn');
+
+    // Capture console output to display in the UI
+    const logMessages = [];
+
+    const logToUI = (...args) => {
+      const msg = args.map(a =>
+        typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)
+      ).join(' ');
+      logMessages.push(msg);
+      output.textContent = logMessages.join('\n');
+      output.scrollTop = output.scrollHeight;
+    };
+
+    // Override console methods to also update the UI
+    const originalLog = console.log;
+    const originalError = console.error;
+    const originalInfo = console.info;
+
+    console.log = (...args) => {
+      originalLog(...args);
+      logToUI(...args);
+    };
+    console.error = (...args) => {
+      originalError(...args);
+      logToUI('❌', ...args);
+    };
+    console.info = (...args) => {
+      originalInfo(...args);
+      logToUI('ℹ️', ...args);
+    };
+
+    // --- Run all examples ---
+    runBtn.addEventListener('click', async () => {
+      logMessages.length = 0;
+      output.textContent = '⏳ Running...\n';
+
+      try {
+        output.textContent += '📌 Starting ZTracer browser examples...\n';
+
+        // 1. Simple log
+        await zt.log("Hello from the browser!", { group: "test", suffix: "browser" });
+
+        // 2. Log object
+        await zt.fromJson({ user: "John", age: 30, email: "john@example.com" }, {
+          group: "api",
+          suffix: "user-data",
+        });
+
+        // 3. Log array (table format)
+        await zt.fromJson([
+          { id: 1, name: "Alice", role: "admin" },
+          { id: 2, name: "Bob", role: "user" },
+          { id: 3, name: "Charlie", role: "guest" },
+        ], { group: "db", suffix: "users" });
+
+        // 4. Timer example
+        await zt.time(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          logToUI('  ⏱️ Timer callback executed after 200ms');
+        }, { group: "api", suffix: "timer-example" });
+
+        // 5. Custom callback
+        await zt.log("Custom callback example", {
+          group: "test",
+          callBack: async (data) => {
+            logToUI(`  📌 Custom callback received: ${data}`);
+          },
+        });
+
+        logToUI('\n✅ All examples completed! Check the browser console for styled output.');
+      } catch (err) {
+        logToUI('❌ Error:', err.message);
+        console.error(err);
+      }
+    });
+
+    // Auto-run the example on page load
+    runBtn.click();
+  </script>
+</body>
+</html>

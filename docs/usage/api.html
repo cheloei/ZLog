@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference — ZTracer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../index.html">
+        <img src="../assets/logo.webp" alt="ZTracer Logo" height="32" />
+        <span class="text-primary">Z</span>Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../index.html">Home</a></li>
+              <li><a class="dropdown-item" href="getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item" href="concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item" href="lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item active" href="api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../development/typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="../development/runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item" href="../development/contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="py-4 bg-dark text-light">
+    <div class="container">
+      <h1 class="display-5 fw-bold">API Reference</h1>
+      <p class="lead text-light-emphasis">Complete technical reference for ZTracer.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="py-4 bg-dark-subtle">
+    <div class="container">
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title"><i class="fas fa-list-ul me-2"></i>On this page</div>
+        <ul class="toc-list">
+          <li><a href="#class">ZTracer Class</a></li>
+          <li><a href="#config">Configuration</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#options">Options</a></li>
+          <li><a href="#types">Types</a></li>
+          <li><a href="#imports">Import / Require</a></li>
+          <li><a href="#errors">Errors &amp; Edge Cases</a></li>
+        </ul>
+      </div>
+
+      <!-- Class -->
+      <h3 id="class" class="text-light">ZTracer Class</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">import</span> ZTracer <span class="text-primary">from</span> <span class="text-success">"z-tracer-kit"</span>;
+<span class="text-primary">const</span> logger = <span class="text-warning">new</span> <span class="text-info">ZTracer</span>(config);</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        All logging functionality is accessed through an instance of <code>ZTracer</code>.
+      </p>
+
+      <!-- Configuration -->
+      <h3 id="config" class="text-light mt-4">Configuration</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">interface</span> <span class="text-info">ZTracerConfig</span>&lt;T <span class="text-primary">extends</span> <span class="text-info">string</span>&gt; {
+  <span class="text-info">global</span>: {
+    <span class="text-info">debug</span>: <span class="text-info">boolean</span>;
+    <span class="text-info">callBack</span>?: <span class="text-info">ZTracerCallBack</span>&lt;T&gt;;
+  };
+  <span class="text-info">groups</span>?: <span class="text-info">ZTracerGroups</span>&lt;T&gt;;
+}</code></pre>
+      </div>
+      <ul class="text-light-emphasis small mt-2">
+        <li><strong>global.debug</strong> — enables/disables console output. Callbacks <strong>always</strong> run regardless.</li>
+        <li><strong>global.callBack</strong> — runs for every log.</li>
+        <li><strong>groups</strong> — map of group names to <code>ZTracerGroup</code> (background, color, callBack).</li>
+      </ul>
+      <p class="text-light-emphasis">
+        See <a href="concepts.html" class="text-primary">Core Concepts</a> for usage examples.
+      </p>
+
+      <!-- Methods -->
+      <h3 id="methods" class="text-light mt-4">Methods</h3>
+      <h5 class="text-primary mt-3"><code>log(data: unknown, options?: ZTracerOptions&lt;T&gt;): Promise&lt;void&gt;</code></h5>
+      <p class="text-light-emphasis">Logs arbitrary data.</p>
+      <div class="bg-dark p-2 rounded-3 border border-secondary mb-2">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Hello"</span>, { <span class="text-info">group</span>: <span class="text-success">"api"</span> });</code></pre>
+      </div>
+      <h5 class="text-success mt-3"><code>fromJson(data: object | unknown[], options?: ZTracerOptions&lt;T&gt;): Promise&lt;void&gt;</code></h5>
+      <p class="text-light-emphasis">Logs structured data. Arrays → tables; objects → expandable dirs.</p>
+      <div class="bg-dark p-2 rounded-3 border border-secondary mb-2">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">fromJson</span>([{ <span class="text-info">id</span>: 1 }], { <span class="text-info">group</span>: <span class="text-success">"db"</span> });</code></pre>
+      </div>
+      <h5 class="text-warning mt-3"><code>time(callback: () =&gt; Promise&lt;void&gt; | void, options?: ZTracerOptions&lt;T&gt;): Promise&lt;void&gt;</code></h5>
+      <p class="text-light-emphasis">Measures execution time of a callback.</p>
+      <div class="bg-dark p-2 rounded-3 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">time</span>(<span class="text-warning">async</span> () => { <span class="text-primary">await</span> <span class="text-info">fetch</span>(url); }, { <span class="text-info">group</span>: <span class="text-success">"api"</span> });</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        All methods return <code>Promise&lt;void&gt;</code> and should be <code>await</code>ed.
+      </p>
+
+      <!-- Options -->
+      <h3 id="options" class="text-light mt-4">Options</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">interface</span> <span class="text-info">ZTracerOptions</span>&lt;T <span class="text-primary">extends</span> <span class="text-info">string</span>&gt; {
+  <span class="text-info">group</span>?: T;          <span class="text-comment">// Group name</span>
+  <span class="text-info">suffix</span>?: <span class="text-info">string</span>;     <span class="text-comment">// Appended to group label</span>
+  <span class="text-info">callBack</span>?: <span class="text-info">ZTracerCallBack</span>&lt;T&gt;;  <span class="text-comment">// Per-log callback</span>
+}</code></pre>
+      </div>
+      <ul class="text-light-emphasis small mt-2">
+        <li><strong>group</strong> — if undefined, no group is rendered.</li>
+        <li><strong>suffix</strong> — optional disambiguation label.</li>
+        <li><strong>callBack</strong> — runs only for this log.</li>
+      </ul>
+
+      <!-- Types -->
+      <h3 id="types" class="text-light mt-4">Types</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary mb-2">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">type</span> <span class="text-info">ZTracerCallBack</span>&lt;T&gt; = (
+  data: <span class="text-info">unknown</span>,
+  group?: T
+) => <span class="text-info">void</span> | <span class="text-info">Promise</span>&lt;<span class="text-info">void</span>&gt;;</code></pre>
+      </div>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">interface</span> <span class="text-info">ZTracerGroup</span>&lt;T&gt; {
+  <span class="text-info">background</span>?: <span class="text-info">string</span>;
+  <span class="text-info">color</span>?: <span class="text-info">string</span>;
+  <span class="text-info">callBack</span>?: <span class="text-info">ZTracerCallBack</span>&lt;T&gt;;
+}</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        Full type definitions are available in the <a href="../development/typescript.html" class="text-primary">TypeScript guide</a>.
+      </p>
+
+      <!-- Import / Require -->
+      <h3 id="imports" class="text-light mt-4">Import / Require</h3>
+      <p class="text-light-emphasis">
+        ZTracer supports both ES Modules and CommonJS. The package exports
+        <strong>default</strong> and <strong>named</strong> exports.
+      </p>
+
+      <h5 class="text-primary mt-3">ES Module (import)</h5>
+      <div class="bg-dark p-2 rounded-3 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">import</span> ZTracer <span class="text-primary">from</span> <span class="text-success">"z-tracer-kit"</span>;
+<span class="text-comment">// or</span>
+<span class="text-primary">import</span> { ZTracer } <span class="text-primary">from</span> <span class="text-success">"z-tracer-kit"</span>;</code></pre>
+      </div>
+
+      <h5 class="text-success mt-3">CommonJS (require)</h5>
+      <div class="bg-dark p-2 rounded-3 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">const</span> { ZTracer } = <span class="text-info">require</span>(<span class="text-success">"z-tracer-kit"</span>);
+<span class="text-comment">// or</span>
+<span class="text-primary">const</span> ZTracer = <span class="text-info">require</span>(<span class="text-success">"z-tracer-kit"</span>).<span class="text-info">default</span>;</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        <i class="fas fa-info-circle text-primary me-1"></i>
+        The CommonJS output uses <code>.cjs</code> files and is automatically detected
+        by Node.js when your project uses <code>"type": "commonjs"</code>.
+      </p>
+
+      <!-- Errors -->
+      <h3 id="errors" class="text-light mt-4">Errors &amp; Edge Cases</h3>
+      <ul class="text-light-emphasis">
+        <li><strong>Callback errors</strong> — caught and logged; app never crashes.</li>
+        <li><strong>Invalid group</strong> — falls back to default gray style (<code>#6c757d</code>).</li>
+        <li><strong>No group/suffix</strong> — no group header rendered.</li>
+        <li><strong>Timer labels</strong> — unique per call (<code>timer-{timestamp}-{random}</code>).</li>
+      </ul>
+      <p class="text-light-emphasis">
+        For more details, see <a href="lifecycle.html#errors" class="text-primary">Log Lifecycle: Error Handling</a>.
+      </p>
+
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis mt-3">
+        <i class="fas fa-arrow-right text-primary me-2"></i>
+        <strong>Next:</strong> See practical examples in
+        <a href="examples.html" class="text-primary">Examples</a> or learn about
+        <a href="../development/typescript.html" class="text-primary">TypeScript</a>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="../development/contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/main.js"></script>
+</body>
+</html>

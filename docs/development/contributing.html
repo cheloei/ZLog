@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing — ZTracer</title>
+
+  <!-- Bootstrap 5 (dark theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../index.html">
+        <img src="../assets/logo.webp" alt="ZTracer Logo" height="32" />
+        <span class="text-primary">Z</span>Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../index.html">Home</a></li>
+              <li><a class="dropdown-item" href="../usage/getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item" href="../usage/concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item" href="../usage/lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item" href="../usage/api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="../usage/examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item active" href="contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="py-4 bg-dark text-light">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Contributing</h1>
+      <p class="lead text-light-emphasis">How to help improve ZTracer.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="py-4 bg-dark-subtle">
+    <div class="container">
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title"><i class="fas fa-list-ul me-2"></i>On this page</div>
+        <ul class="toc-list">
+          <li><a href="#setup">Development Setup</a></li>
+          <li><a href="#structure">Project Structure</a></li>
+          <li><a href="#build">Build Commands</a></li>
+          <li><a href="#testing">Testing</a></li>
+          <li><a href="#pr">Pull Requests</a></li>
+        </ul>
+      </div>
+
+      <!-- Development Setup -->
+      <h3 id="setup" class="text-light">Development Setup</h3>
+      <p class="text-light-emphasis">
+        Prerequisites: <strong>Node.js 18+</strong> and <strong>npm</strong>.
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code>git clone https://github.com/cheloei/ZTracer.git
+cd ZTracer
+npm install</code></pre>
+      </div>
+
+      <!-- Project Structure -->
+      <h3 id="structure" class="text-light mt-4">Project Structure</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code>ZTracer/
+├── src/                 # Source code (TypeScript)
+│   ├── index.ts         # Entry point
+│   ├── ZTracer.ts          # Main class
+│   ├── Type.ts          # Type definitions
+│   └── modules/         # Utilities
+├── dist/                # Compiled output (ESM + CJS)
+├── example/             # Usage examples
+└── docs/                # Documentation site</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        See <a href="runtime.html" class="text-primary">Runtime &amp; Styling</a> for module details.
+      </p>
+
+      <!-- Build Commands -->
+      <h3 id="build" class="text-light mt-4">Build Commands</h3>
+      <ul class="text-light-emphasis">
+        <li><strong><code>npm run build</code></strong> — compiles TypeScript to <code>dist/esm</code> and <code>dist/cjs</code>.</li>
+        <li><strong><code>npm run pack</code></strong> — runs <code>build</code> then creates a <code>.tgz</code> package.</li>
+      </ul>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-comment"># After making changes:</span>
+npm run build
+
+<span class="text-comment"># Test locally:</span>
+cd example
+npm install ../ZTracer-1.0.0.tgz
+npm run node</code></pre>
+      </div>
+
+      <!-- Testing -->
+      <h3 id="testing" class="text-light mt-4">Testing</h3>
+      <p class="text-light-emphasis">
+        Currently, ZTracer does not have automated tests. Manual testing is done via the
+        <code>example/</code> project:
+      </p>
+      <ol class="text-light-emphasis">
+        <li>Run <code>npm run build</code> in the root.</li>
+        <li>Navigate to <code>example/</code> and run <code>npm install ../ZTracer-1.0.0.tgz</code>.</li>
+        <li>Test in Node.js: <code>npm run node</code>.</li>
+        <li>Test in the browser: <code>npm run serve</code>.</li>
+      </ol>
+      <p class="text-light-emphasis mt-2">
+        Contributions adding automated tests are welcome!
+      </p>
+
+      <!-- Pull Requests -->
+      <h3 id="pr" class="text-light mt-4">Pull Requests</h3>
+      <ol class="text-light-emphasis">
+        <li><strong>Fork</strong> the repository.</li>
+        <li><strong>Create a branch</strong>: <code>git checkout -b feature/your-feature</code>.</li>
+        <li><strong>Make changes</strong> and commit with a clear message.</li>
+        <li><strong>Push</strong> to your fork.</li>
+        <li><strong>Open a Pull Request</strong> against the <code>main</code> branch.</li>
+      </ol>
+      <p class="text-light-emphasis mt-2">
+        For detailed guidelines, see the
+        <a href="https://github.com/cheloei/ZTracer/blob/main/CONTRIBUTING.md" class="text-primary" target="_blank">full contributing guide</a>.
+      </p>
+
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis mt-3">
+        <i class="fas fa-arrow-right text-primary me-2"></i>
+        <strong>Done:</strong> You've completed the ZTracer documentation. Check the
+        <a href="../index.html" class="text-primary">Home</a> page to start over.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/main.js"></script>
+</body>
+</html>

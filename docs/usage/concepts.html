@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Concepts — ZTracer</title>
+
+  <!-- Bootstrap 5 (dark theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../index.html">
+        <img src="../assets/logo.webp" alt="ZTracer Logo" height="32" />
+        <span class="text-primary">Z</span>Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../index.html">Home</a></li>
+              <li><a class="dropdown-item" href="getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item active" href="concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item" href="lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item" href="api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../development/typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="../development/runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item" href="../development/contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="py-4 bg-dark text-light">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Core Concepts</h1>
+      <p class="lead text-light-emphasis">The building blocks of ZTracer.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="py-4 bg-dark-subtle">
+    <div class="container">
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title"><i class="fas fa-list-ul me-2"></i>On this page</div>
+        <ul class="toc-list">
+          <li><a href="#groups">Groups</a></li>
+          <li><a href="#suffixes">Suffixes</a></li>
+          <li><a href="#debug">Debug Mode</a></li>
+          <li><a href="#fromjson">fromJson()</a></li>
+          <li><a href="#time">time()</a></li>
+          <li><a href="#lifecycle">Lifecycle</a></li>
+        </ul>
+      </div>
+
+      <!-- Groups -->
+      <h3 id="groups" class="text-light">Groups</h3>
+      <p class="text-light-emphasis">
+        Groups visually separate log categories. Each group can have a <strong>background</strong>
+        and <strong>text color</strong>.
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">const</span> logger = <span class="text-warning">new</span> <span class="text-info">ZTracer</span>({
+  groups: {
+    api: { <span class="text-info">background</span>: <span class="text-success">"#0d6efd"</span>, <span class="text-info">color</span>: <span class="text-success">"#fff"</span> },
+    db:  { <span class="text-info">background</span>: <span class="text-success">"#198754"</span>, <span class="text-info">color</span>: <span class="text-success">"#fff"</span> }
+  }
+});
+<span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"User logged in"</span>, { <span class="text-info">group</span>: <span class="text-success">"api"</span> });</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        If a group is <strong>not defined</strong>, ZTracer renders it with a default gray style.
+        See the <a href="api.html" class="text-primary">API Reference</a> for full group configuration.
+      </p>
+
+      <!-- Suffixes -->
+      <h3 id="suffixes" class="text-light mt-4">Suffixes</h3>
+      <p class="text-light-emphasis">
+        A suffix is an optional label appended to the group name. Useful for distinguishing
+        multiple logs in the same group.
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Request #1"</span>, { <span class="text-info">group</span>: <span class="text-success">"api"</span>, <span class="text-info">suffix</span>: <span class="text-success">"req-1"</span> });
+<span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Request #2"</span>, { <span class="text-info">group</span>: <span class="text-success">"api"</span>, <span class="text-info">suffix</span>: <span class="text-success">"req-2"</span> });</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">Console output: <code>api req-1</code> and <code>api req-2</code>.</p>
+
+      <!-- Debug Mode -->
+      <h3 id="debug" class="text-light mt-4">Debug Mode</h3>
+      <p class="text-light-emphasis">
+        The <code>debug</code> flag controls <strong>console output</strong> only.
+        Callbacks <strong>always</strong> run, even when <code>debug: false</code>.
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code>{
+  global: {
+    <span class="text-info">debug</span>: <span class="text-warning">false</span>,  <span class="text-comment">// No console output</span>
+    <span class="text-info">callBack</span>: <span class="text-warning">async</span> (data) => { <span class="text-comment">/* still runs */</span> }
+  }
+}</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        This is useful for <strong>production telemetry</strong> — see the
+        <a href="lifecycle.html" class="text-primary">Log Lifecycle</a> page for details.
+      </p>
+
+      <!-- fromJson() -->
+      <h3 id="fromjson" class="text-light mt-4">fromJson()</h3>
+      <p class="text-light-emphasis">
+        Logs structured data: <strong>arrays</strong> as tables (<code>console.table</code>),
+        <strong>objects</strong> as expandable directories (<code>console.dir</code>).
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">fromJson</span>([
+  { <span class="text-info">id</span>: 1, <span class="text-info">name</span>: <span class="text-success">"Alice"</span> }
+], { <span class="text-info">group</span>: <span class="text-success">"db"</span> });</code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        For more examples, visit the <a href="examples.html" class="text-primary">Examples</a> page.
+      </p>
+
+      <!-- time() -->
+      <h3 id="time" class="text-light mt-4">time()</h3>
+      <p class="text-light-emphasis">
+        Measures execution time of async or sync functions. Each timer gets a unique label.
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">await</span> logger.<span class="text-info">time</span>(<span class="text-warning">async</span> () => {
+  <span class="text-primary">await</span> <span class="text-info">fetch</span>(<span class="text-success">"https://api.example.com"</span>);
+}, { <span class="text-info">group</span>: <span class="text-success">"api"</span> });</code></pre>
+      </div>
+
+      <!-- Lifecycle -->
+      <h3 id="lifecycle" class="text-light mt-4">Log Lifecycle</h3>
+      <p class="text-light-emphasis">
+        Every log passes through <strong>4 stages</strong> in order:
+      </p>
+      <ol class="text-light-emphasis">
+        <li><strong>Console Logger</strong> — only if <code>debug: true</code></li>
+        <li><strong>Global Callback</strong> — if defined</li>
+        <li><strong>Group Callback</strong> — if group exists and has a callback</li>
+        <li><strong>Specific Callback</strong> — if provided in <code>options</code></li>
+      </ol>
+      <p class="text-light-emphasis">
+        For a detailed explanation with examples, see the
+        <a href="lifecycle.html" class="text-primary">Log Lifecycle</a> page.
+      </p>
+
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis mt-3">
+        <i class="fas fa-arrow-right text-primary me-2"></i>
+        <strong>Next:</strong> Dive deeper into the
+        <a href="lifecycle.html" class="text-primary">Log Lifecycle</a> or explore
+        <a href="api.html" class="text-primary">API Reference</a>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="../development/contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "ZTracer-example",
+  "version": "1.0.0",
+  "description": "Example usage of the ZTracer library in Node.js and browser",
+  "type": "module",
+  "scripts": {
+    "node": "node app.js",
+    "serve": "npx serve . -l 8080",
+    "start": "npm run serve"
+  },
+  "dependencies": {
+    "z-tracer-kit": "^1.0.0"
+  }
+}

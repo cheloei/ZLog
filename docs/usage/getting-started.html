@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — ZTracer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="../assets/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="../index.html">
+        <img src="../assets/logo.webp" alt="ZTracer Logo" height="32" />
+        <span class="text-primary">Z</span>Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../index.html">Home</a></li>
+              <li><a class="dropdown-item active" href="getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item" href="concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item" href="lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item" href="api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="../development/typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="../development/runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item" href="../development/contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="py-4 bg-dark text-light">
+    <div class="container">
+      <h1 class="display-5 fw-bold">Getting Started</h1>
+      <p class="lead text-light-emphasis">Install ZTracer and write your first log in minutes.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="py-4 bg-dark-subtle">
+    <div class="container">
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title"><i class="fas fa-list-ul me-2"></i>On this page</div>
+        <ul class="toc-list">
+          <li><a href="#requirements">Requirements</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#esm">ES Module (ESM) Usage</a></li>
+          <li><a href="#cjs">CommonJS (CJS) Usage</a></li>
+          <li><a href="#browser">Browser Usage</a></li>
+          <li><a href="#next">Next Steps</a></li>
+        </ul>
+      </div>
+
+      <!-- Requirements -->
+      <h3 id="requirements" class="text-light">Requirements</h3>
+      <ul class="text-light-emphasis">
+        <li>Node.js 18+ (for Node usage)</li>
+        <li>npm, yarn, or pnpm</li>
+        <li>Modern browser (for browser usage)</li>
+      </ul>
+
+      <!-- Installation -->
+      <h3 id="installation" class="text-light mt-4">Installation</h3>
+      <div class="bg-dark p-3 rounded-4 border border-secondary mb-2">
+        <pre class="text-light-emphasis mb-0"><code>npm install z-tracer-kit</code></pre>
+      </div>
+      <p class="text-light-emphasis">Also available via <code>yarn add z-tracer-kit</code> or <code>pnpm add z-tracer-kit</code>.</p>
+
+      <!-- ESM Usage -->
+      <h3 id="esm" class="text-light mt-4">ES Module (ESM) Usage</h3>
+      <p class="text-light-emphasis">
+        If your project uses <code>"type": "module"</code> in <code>package.json</code> or <code>.mjs</code> files:
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">import</span> ZTracer <span class="text-primary">from</span> <span class="text-success">"z-tracer-kit"</span>;
+
+<span class="text-primary">const</span> logger = <span class="text-warning">new</span> <span class="text-info">ZTracer</span>({ global: { <span class="text-info">debug</span>: <span class="text-warning">true</span> } });
+<span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Hello from ESM!"</span>);</code></pre>
+      </div>
+
+      <!-- CJS Usage -->
+      <h3 id="cjs" class="text-light mt-4">CommonJS (CJS) Usage</h3>
+      <p class="text-light-emphasis">
+        If your project uses <code>"type": "commonjs"</code> in <code>package.json</code> or <code>.cjs</code> files:
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-primary">const</span> { ZTracer } = <span class="text-info">require</span>(<span class="text-success">"z-tracer-kit"</span>);
+
+<span class="text-primary">const</span> logger = <span class="text-warning">new</span> <span class="text-info">ZTracer</span>({ global: { <span class="text-info">debug</span>: <span class="text-warning">true</span> } });
+<span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Hello from CommonJS!"</span>);</code></pre>
+      </div>
+      <div class="alert alert-secondary bg-dark border-secondary text-light-emphasis mt-3">
+        <i class="fas fa-info-circle text-primary me-2"></i>
+        <strong>Note:</strong> ZTracer exports <code>ZTracer</code> as both the <strong>default</strong> and a <strong>named</strong> export.
+        In CommonJS, you can use <code>const { ZTracer } = require('z-tracer-kit')</code> or
+        <code>const ZTracer = require('z-tracer-kit').default</code>.
+      </div>
+
+      <!-- Browser Usage -->
+      <h3 id="browser" class="text-light mt-4">Browser Usage</h3>
+      <p class="text-light-emphasis">
+        In the browser, you can use an <strong>import map</strong> or a bundler:
+      </p>
+      <div class="bg-dark p-3 rounded-4 border border-secondary">
+        <pre class="text-light-emphasis mb-0"><code><span class="text-tag">&lt;script type="importmap"&gt;</span>
+{
+  <span class="text-info">"imports"</span>: {
+    <span class="text-success">"z-tracer-kit"</span>: <span class="text-success">"./node_modules/z-tracer-kit/dist/esm/index.js"</span>
+  }
+}
+<span class="text-tag">&lt;/script&gt;</span>
+<span class="text-tag">&lt;script type="module"&gt;</span>
+  <span class="text-primary">import</span> ZTracer <span class="text-primary">from</span> <span class="text-success">"z-tracer-kit"</span>;
+  <span class="text-primary">const</span> logger = <span class="text-warning">new</span> <span class="text-info">ZTracer</span>({ global: { <span class="text-info">debug</span>: <span class="text-warning">true</span> } });
+  <span class="text-primary">await</span> logger.<span class="text-info">log</span>(<span class="text-success">"Hello from the browser!"</span>);
+<span class="text-tag">&lt;/script&gt;</span></code></pre>
+      </div>
+      <p class="text-light-emphasis mt-2">
+        For a complete example, see the <a href="examples.html" class="text-primary">Examples</a> page.
+      </p>
+
+      <!-- Next Steps -->
+      <h3 id="next" class="text-light mt-4">Next Steps</h3>
+      <ul class="text-light-emphasis">
+        <li>Learn about <a href="concepts.html" class="text-primary">Core Concepts</a></li>
+        <li>Understand the <a href="lifecycle.html" class="text-primary">Log Lifecycle</a></li>
+        <li>Explore the <a href="api.html" class="text-primary">API Reference</a></li>
+        <li>See <a href="examples.html" class="text-primary">Examples</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="../development/contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/main.js"></script>
+</body>
+</html>

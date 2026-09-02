@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZTracer — Every log has a trail.</title>
+  <!-- Bootstrap 5 (dark theme) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="assets/style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle border-bottom border-secondary sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.html">
+        <img src="assets/logo.webp" alt="ZTracer Logo" height="32" />
+        Tracer
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <!-- Usage Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-book-open me-1"></i> Usage
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item active" href="index.html">Home</a></li>
+              <li><a class="dropdown-item" href="usage/getting-started.html">Getting Started</a></li>
+              <li><a class="dropdown-item" href="usage/concepts.html">Core Concepts</a></li>
+              <li><a class="dropdown-item" href="usage/lifecycle.html">Log Lifecycle</a></li>
+              <li><a class="dropdown-item" href="usage/api.html">API Reference</a></li>
+              <li><a class="dropdown-item" href="usage/examples.html">Examples</a></li>
+            </ul>
+          </li>
+          <!-- Development Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-code me-1"></i> Development
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="development/typescript.html">TypeScript</a></li>
+              <li><a class="dropdown-item" href="development/runtime.html">Runtime &amp; Styling</a></li>
+              <li><a class="dropdown-item" href="development/contributing.html">Contributing</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-sm ms-3">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="py-5 bg-dark text-light">
+    <div class="container py-4">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="d-flex">
+            <img src="assets/logo.webp" alt="ZTracer Logo" height="64" class="mb-3" />
+            <h1 class="display-3 fw-bold ms-3">Tracer</h1>
+          </div>
+          <p class="lead fs-2 fw-light text-light-emphasis">Every log has a trail.</p>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <span class="badge-feature badge-feature-lifecycle"><i class="fas fa-arrows-spin me-1"></i> Lifecycle
+              Hooks</span>
+            <span class="badge-feature badge-feature-visual"><i class="fas fa-palette me-1"></i> Visual Groups</span>
+            <span class="badge-feature badge-feature-typescript"><i class="fas fa-code me-1"></i> Type‑safe</span>
+            <span class="badge-feature badge-feature-size"><i class="fas fa-weight-scale me-1"></i> ~6.5 KB</span>
+            <span class="badge-feature badge-feature-modules"><i class="fas fa-cubes me-1"></i> CJS + ESM</span>
+            <span class="badge-feature badge-feature-zero"><i class="fas fa-box-open me-1"></i> Zero Deps</span>
+          </div>
+          <p class="fs-5 text-light-emphasis mt-4">
+            A lightweight, typed logging utility with a powerful lifecycle.
+            Simple, clean, and developer‑friendly — flexible enough for production.
+          </p>
+          <div class="mt-4">
+            <a href="usage/getting-started.html" class="btn btn-primary btn-lg me-3">
+              <i class="fas fa-rocket"></i> Get Started
+            </a>
+            <a href="https://github.com/cheloei/ZTracer" target="_blank" class="btn btn-outline-light btn-lg">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block text-end">
+          <div class="bg-dark-subtle p-4 rounded-4 border border-secondary">
+            <div class="d-flex justify-content-around fs-1">
+              <span class="text-success"><i class="fas fa-check-circle"></i></span>
+              <span class="text-warning"><i class="fas fa-bolt"></i></span>
+              <span class="text-info"><i class="fas fa-cubes"></i></span>
+            </div>
+            <p class="text-center text-light-emphasis small mt-2">~6.5 KB · Zero deps · CJS + ESM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT IS ZTracer? ===== -->
+  <section class="py-5 bg-dark-subtle">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h2 class="fw-bold text-light">What is ZTracer?</h2>
+          <p class="text-light-emphasis fs-5">
+            ZTracer is a tiny, typed logging utility for JavaScript and Node.js.
+            It makes console output visually readable by grouping logs with colors and backgrounds.
+          </p>
+          <p class="text-light-emphasis">
+            <strong>More than a pretty logger.</strong> ZTracer features a log lifecycle with
+            global, group, and per‑log callbacks — giving you full control over every log.
+            With the right configuration, it's a lightweight, reliable solution for
+            <strong>production</strong> as well as local development.
+          </p>
+          <p class="text-light-emphasis">
+            <strong>Not</strong> an enterprise logging system with built‑in transports.
+            Just enough — and fully under your control.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <div class="bg-dark p-4 rounded-4 border border-secondary h-100">
+            <h5 class="text-light">At a glance</h5>
+            <ul class="list-unstyled text-light-emphasis">
+              <li><i class="fas fa-check text-success me-2"></i> Simple, clean API</li>
+              <li><i class="fas fa-check text-success me-2"></i> Type‑safe (TypeScript)</li>
+              <li><i class="fas fa-check text-success me-2"></i> Colored visual groups</li>
+              <li><i class="fas fa-check text-success me-2"></i> Log lifecycle callbacks</li>
+              <li><i class="fas fa-check text-success me-2"></i> ~6.5 KB · Zero deps</li>
+              <li><i class="fas fa-check text-success me-2"></i> CJS + ESM</li>
+              <li><i class="fas fa-check text-success me-2"></i> Node.js + Browser</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <h2 class="fw-bold text-light text-center mb-5">Key Features</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-primary mb-2"><i class="fas fa-arrows-spin"></i></div>
+            <h5 class="text-light">Log Lifecycle</h5>
+            <p class="text-light-emphasis">Global → Group → Specific callbacks. Hook into every log, transform data, or
+              send telemetry.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-success mb-2"><i class="fas fa-palette"></i></div>
+            <h5 class="text-light">Visual Grouping</h5>
+            <p class="text-light-emphasis">Assign colors and backgrounds to different categories. Instantly distinguish
+              API from DB logs.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-warning mb-2"><i class="fas fa-clock"></i></div>
+            <h5 class="text-light">Timing</h5>
+            <p class="text-light-emphasis">Measure execution time of any async/sync function with a clean, grouped
+              timer.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-info mb-2"><i class="fas fa-table"></i></div>
+            <h5 class="text-light">JSON / Table</h5>
+            <p class="text-light-emphasis">Log objects and arrays as tables or expandable directories.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-danger mb-2"><i class="fas fa-code"></i></div>
+            <h5 class="text-light">TypeScript First</h5>
+            <p class="text-light-emphasis">Full type safety with generics. Define your group names and get autocomplete.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-dark-subtle p-4 rounded-4 h-100 border border-secondary">
+            <div class="fs-1 text-light mb-2"><i class="fas fa-cubes"></i></div>
+            <h5 class="text-light">Dual Module</h5>
+            <p class="text-light-emphasis">Supports both CommonJS and ES Modules. Use it anywhere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON ===== -->
+  <section class="py-5 bg-dark-subtle">
+    <div class="container">
+      <h2 class="fw-bold text-light text-center mb-4">ZTracer vs Others</h2>
+      <div class="table-responsive">
+        <table class="table table-dark table-hover table-bordered border-secondary">
+          <thead>
+            <tr class="text-light">
+              <th>Library</th>
+              <th>Size</th>
+              <th>Deps</th>
+              <th>TS</th>
+              <th>Groups</th>
+              <th>Lifecycle</th>
+              <th>Node/Browser</th>
+              <th>Best for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-light-emphasis">
+              <td><strong class="text-primary">ZTracer</strong></td>
+              <td>~6.5 KB</td>
+              <td>0</td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td>Both</td>
+              <td>Dev logging, production with hooks</td>
+            </tr>
+            <tr>
+              <td><code>console.log</code></td>
+              <td>–</td>
+              <td>0</td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td>Both</td>
+              <td>Basic output</td>
+            </tr>
+            <tr>
+              <td><code>debug</code></td>
+              <td>~12 KB</td>
+              <td>0</td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td>Node</td>
+              <td>Namespace logging</td>
+            </tr>
+            <tr>
+              <td><code>pino</code></td>
+              <td>~30 KB</td>
+              <td>few</td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td>Node</td>
+              <td>Production JSON logging</td>
+            </tr>
+            <tr>
+              <td><code>winston</code></td>
+              <td>~150 KB</td>
+              <td>many</td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td><i class="fas fa-times text-danger"></i></td>
+              <td><i class="fas fa-check text-success"></i></td>
+              <td>Node</td>
+              <td>Enterprise logging</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHEN TO USE ===== -->
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="bg-dark-subtle p-4 rounded-4 border border-success h-100">
+            <h4 class="text-success"><i class="fas fa-check-circle me-2"></i>When to use ZTracer</h4>
+            <ul class="text-light-emphasis list-unstyled">
+              <li><i class="fas fa-chevron-right text-success me-2"></i>Local development &amp; debugging</li>
+              <li><i class="fas fa-chevron-right text-success me-2"></i>Quick prototyping</li>
+              <li><i class="fas fa-chevron-right text-success me-2"></i>Visual separation of log types</li>
+              <li><i class="fas fa-chevron-right text-success me-2"></i>Production with custom lifecycle hooks</li>
+              <li><i class="fas fa-chevron-right text-success me-2"></i>Learning logging concepts</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-dark-subtle p-4 rounded-4 border border-danger h-100">
+            <h4 class="text-danger"><i class="fas fa-times-circle me-2"></i>When not to use</h4>
+            <ul class="text-light-emphasis list-unstyled">
+              <li><i class="fas fa-chevron-right text-danger me-2"></i>Large-scale log aggregation</li>
+              <li><i class="fas fa-chevron-right text-danger me-2"></i>High‑performance logging (millions of ops)</li>
+              <li><i class="fas fa-chevron-right text-danger me-2"></i>JSON‑only pipelines</li>
+              <li><i class="fas fa-chevron-right text-danger me-2"></i>Enterprise monitoring systems</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-4 bg-dark border-top border-secondary">
+    <div class="container text-center">
+      <p class="text-light-emphasis small mb-0">
+        &copy; 2026 ZTracer &mdash; Open source. MIT License.
+        <br />
+        <a href="https://github.com/cheloei/ZTracer" class="text-light-emphasis" target="_blank">GitHub</a>
+        &middot;
+        <a href="development/contributing.html" class="text-light-emphasis">Contributing</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/main.js"></script>
+</body>
+
+</html>
