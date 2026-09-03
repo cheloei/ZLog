@@ -9,6 +9,6 @@
     "start": "npm run serve"
   },
   "dependencies": {
-    "z-tracer-kit": "^1.0.0"
+    "z-tracer-kit": "^1.0.1"
   }
 }

@@ -55,20 +55,31 @@ export default class ZTracer<T extends string = string> {
    * @param options - Optional per-log settings.
    * @returns Promise that resolves when the callback completes.
    */
-  async time(
-    callback: () => Promise<void> | void,
-    options?: ZTracerOptions<T>
-  ): Promise<void> {
-    const label = `timer-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    await this._logger(async () => {
-      console.time(label);
-      try {
-        await callback();
-      } finally {
-        console.timeEnd(label);
-      }
-    }, null, options);
+async time(
+  callback: () => Promise<void> | void,
+  options?: ZTracerOptions<T>
+): Promise<void> {
+  const label = `timer-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const start = performance.now();
+
+  try {
+    await callback();
+  } finally {
+    const end = performance.now();
+    const elapsedMs = end - start; // Time in milliseconds
+
+    // Log the result using the internal logger.
+    // The elapsed time is passed as the `data` parameter so that it is
+    // included in any callback invocations and error logs.
+    await this._logger(
+      () => {
+        console.log(`${label} => ${elapsedMs} ms`);
+      },
+      elapsedMs, // <-- Now the correct value is passed
+      options
+    );
   }
+}
 
   /**
    * Core logger – handles group rendering, console output, and all callbacks.

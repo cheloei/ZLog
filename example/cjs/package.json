@@ -9,6 +9,6 @@
   "keywords": [],
   "type": "commonjs",
   "dependencies": {
-    "z-tracer-kit": "^1.0.0"
+    "z-tracer-kit": "^1.0.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "z-tracer-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Every log has a trail. A lightweight, typed logging utility with visual groups and a powerful lifecycle.",
   "type": "module",
   "main": "./dist/cjs/index.js",
